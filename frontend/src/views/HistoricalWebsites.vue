@@ -21,7 +21,24 @@
 </template>
 
 <script>
-// TODO: Fetch websites data from API
+import axios from 'axios';
+
+export default {
+  data() {
+    return {
+      websites: []
+    }
+  },
+  mounted() {
+    axios.get('https://mch-dev.userwei.com/api/websites')
+      .then(response => {
+        this.websites = response.data;
+      })
+      .catch(error => {
+        console.error('Error fetching websites:', error);
+      });
+  }
+}
 </script>
 
 <style scoped>
@@ -39,8 +56,24 @@
 }
 
 .websites-grid {
-  /* TODO: Add styles for a responsive grid layout */
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+  margin-top: 20px;
 }
+
+@media (min-width: 640px) {
+  .websites-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 960px) {
+  .websites-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
 
 .website-card {
   background-color: #f9f9f9;
@@ -55,11 +88,11 @@
 }
 
 .website-image {
+  margin: 10px auto;
   width: 100%;
   height: 200px;
-  object-fit: cover;
+  object-fit: contain;
 }
-
 .website-info {
   padding: 20px;
 }
